@@ -158,7 +158,7 @@ public:
         CircleContainer* p = ph;
         if (n == -1)
         {
-            for (int i = 0; p->next != NULL; p = p->next);
+            for (int i = 0; p->next != NULL; p = p->next); //
             p->next = q;
             return;
             
