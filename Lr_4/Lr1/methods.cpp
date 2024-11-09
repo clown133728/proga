@@ -424,3 +424,88 @@ OutlineCircle operator-(const OutlineCircle& oc1, const OutlineCircle& oc2)
     OutlineCircle rv(oc1.x - oc2.x, oc1.y - oc2.y, rad, oc1.color, oc1.outlinecolor);
     return rv;
 }
+
+//
+
+
+CircleContainer::CircleContainer(Circle _obj)
+{
+    obj = _obj;
+    next = NULL;
+    ++counter;
+}
+
+int CircleContainer::getCounter()
+{
+    return counter;
+}
+
+CircleList::CircleList()
+{
+    ph = NULL;
+}
+
+CircleList::CircleList(Circle obj)
+{
+    ph = new CircleContainer(obj);
+}
+
+void CircleList::add(Circle obj, int n)
+{
+    CircleContainer* q = new CircleContainer(obj);
+    if (ph == NULL)
+    {
+        ph = q;
+        return;
+    }
+    if (n == 0)
+    {
+        q->next = ph;
+        ph = q;
+        return;
+    }
+    CircleContainer* p = ph;
+    if (n == -1)
+    {
+        for (int i = 0; p->next != NULL; p = p->next); //
+        p->next = q;
+        return;
+
+    }
+    for (int i = 0; i < n; p = p->next);
+    q->next = p->next;
+    p->next = q;
+}
+
+void CircleList::del(int n)
+{
+    if (ph == NULL) return;
+    if (n == 0)
+    {
+        CircleContainer* q = ph;
+        ph = ph->next;
+        delete q;
+        return;
+    }
+    if (n == -1) n = CircleContainer::getCounter() - 1;
+    CircleContainer* p = ph;
+    for (int i = 0; i < n; p = p->next);
+    CircleContainer* q = p->next;
+    p->next = q->next;
+    delete q;
+}
+
+void CircleList::print()
+{
+    for (CircleContainer* p = ph; p != NULL; p = p->next)
+    {
+        p->obj.print();
+    }
+}
+
+CircleContainer* CircleList::search(const char* str)
+{
+    CircleContainer* p = ph;
+    for (; ((p != NULL) || (strcmp(p->obj.color, str) != 0)); p = p->next);
+    return p;
+}

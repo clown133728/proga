@@ -111,17 +111,9 @@ private:
 class CircleContainer
 {
 public:
-    CircleContainer(Circle _obj)
-    {
-        obj = _obj;
-        next = NULL;
-        ++counter;
-    }
+    CircleContainer(Circle _obj);
 
-    static int getCounter()
-    {
-        return counter;
-    }
+    static int getCounter();
 
 private:
     Circle obj;
@@ -136,71 +128,12 @@ class CircleList
 {
 public:
     CircleList();
-    CircleList(CircleContainer* ptr)
-    {
-        ph = ptr;
-    }
+    CircleList(Circle obj);
 
-    void add(Circle obj, int n)
-    {
-        CircleContainer* q = new CircleContainer(obj);
-        if (CircleContainer::getCounter() == 0)
-        {
-            ph = q;
-            return;
-        }
-        if (n == 0)
-        {
-            q->next = ph;
-            ph = q;
-            return;
-        }
-        CircleContainer* p = ph;
-        if (n == -1)
-        {
-            for (int i = 0; p->next != NULL; p = p->next); //
-            p->next = q;
-            return;
-            
-        }
-        for (int i = 0; i < n; p = p->next);
-        q->next = p->next;
-        p->next = q;
-    }
-    void del(int n)
-    {
-        if (n == 0)
-        {
-            CircleContainer* q = ph;
-            ph = ph->next;
-            delete q;
-            return;
-        }
-        if (n == -1) n = CircleContainer::getCounter() - 1;
-        CircleContainer* p = ph;
-        for (int i = 0; i < n; p = p->next);
-        CircleContainer* q = p->next;
-        p->next = q->next;
-        delete q;
-    }
-
-    void print()
-    {
-        for (CircleContainer* p = ph; p != NULL; p = p->next)
-        {
-            p->obj.print();
-        }
-    }
-
-    int search(const char* str)
-    {
-        CircleContainer* p = ph;
-        for (int i = 0; p != NULL; p = p->next, i++)
-        {
-            if (strcmp(p->obj.color, str) == 0) return i;
-        }
-        return -1;
-    }
+    void add(Circle obj, int n);
+    void del(int n);
+    void print();
+    CircleContainer* search(const char* str);
 
 private:
     CircleContainer* ph;
