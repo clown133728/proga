@@ -129,6 +129,7 @@ class CircleList
 public:
     CircleList();
     CircleList(Circle obj);
+    ~CircleList();
 
     void add(Circle obj, int n);
     void del(int n);

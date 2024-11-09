@@ -450,6 +450,16 @@ CircleList::CircleList(Circle obj)
     ph = new CircleContainer(obj);
 }
 
+CircleList::~CircleList()
+{
+    for (CircleContainer* p = ph; p != NULL;)
+    {
+        CircleContainer* q = p;
+        p = p->next;
+        delete q;
+    }
+}
+
 void CircleList::add(Circle obj, int n)
 {
     CircleContainer* q = new CircleContainer(obj);
@@ -467,7 +477,7 @@ void CircleList::add(Circle obj, int n)
     CircleContainer* p = ph;
     if (n == -1)
     {
-        for (int i = 0; p->next != NULL; p = p->next); //
+        for (int i = 0; p->next != NULL; p = p->next);
         p->next = q;
         return;
 
@@ -505,7 +515,7 @@ void CircleList::print()
 
 CircleContainer* CircleList::search(const char* str)
 {
-    CircleContainer* p = ph;
-    for (; ((p != NULL) || (strcmp(p->obj.color, str) != 0)); p = p->next);
+    CircleContainer* p;
+    for (p = ph; ((p != NULL) && (strcmp(p->obj.color, str) != 0)); p = p->next);
     return p;
 }
