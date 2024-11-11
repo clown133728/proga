@@ -122,8 +122,6 @@ private:
     static int counter;
 };
 
-int CircleContainer::counter = 0;
-
 class CircleList
 {
 public:

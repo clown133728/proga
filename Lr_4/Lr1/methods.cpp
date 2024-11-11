@@ -427,6 +427,7 @@ OutlineCircle operator-(const OutlineCircle& oc1, const OutlineCircle& oc2)
 
 //
 
+int CircleContainer::counter = 0;
 
 CircleContainer::CircleContainer(Circle _obj)
 {

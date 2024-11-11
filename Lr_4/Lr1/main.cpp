@@ -90,8 +90,13 @@ int main() {
 
  //   char* str = new char[15];
  //   strcpy(str, "blue");
-    test1();
-    test2();
+    //test1();
+    //test2();
+    CircleList* cl = new CircleList;
+    cl->add(Circle(1, 3, 2.5, "black"), -1);
+    cl->add(Circle(2, 4, 1.3, "yellow"), -1);
+    cl->add(Oval(0, 0, 1.8, .5, "blue"), -1); // не работает
+    cl->print();
 
 
 
