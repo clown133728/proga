@@ -429,11 +429,21 @@ OutlineCircle operator-(const OutlineCircle& oc1, const OutlineCircle& oc2)
 
 int CircleContainer::counter = 0;
 
-CircleContainer::CircleContainer(Circle _obj)
+CircleContainer::CircleContainer(Circle* _obj)
 {
     obj = _obj;
     next = NULL;
     ++counter;
+}
+
+CircleContainer::~CircleContainer()
+{
+    delete obj;
+}
+
+void CircleContainer::print()
+{
+    obj->print();
 }
 
 int CircleContainer::getCounter()
@@ -446,7 +456,7 @@ CircleList::CircleList()
     ph = NULL;
 }
 
-CircleList::CircleList(Circle obj)
+CircleList::CircleList(Circle* obj)
 {
     ph = new CircleContainer(obj);
 }
@@ -461,8 +471,9 @@ CircleList::~CircleList()
     }
 }
 
-void CircleList::add(Circle obj, int n)
+void CircleList::add(Circle* obj, int n)
 {
+    if (n > CircleContainer::getCounter() - 1) return;
     CircleContainer* q = new CircleContainer(obj);
     if (ph == NULL)
     {
@@ -478,12 +489,12 @@ void CircleList::add(Circle obj, int n)
     CircleContainer* p = ph;
     if (n == -1)
     {
-        for (int i = 0; p->next != NULL; p = p->next);
+        for (; p->next != NULL; p = p->next);
         p->next = q;
         return;
 
     }
-    for (int i = 0; i < n; p = p->next);
+    for (int i = 0; i < n - 1; p = p->next, i++);
     q->next = p->next;
     p->next = q;
 }
@@ -500,7 +511,7 @@ void CircleList::del(int n)
     }
     if (n == -1) n = CircleContainer::getCounter() - 1;
     CircleContainer* p = ph;
-    for (int i = 0; i < n; p = p->next);
+    for (int i = 0; i < n - 1; p = p->next, i++);
     CircleContainer* q = p->next;
     p->next = q->next;
     delete q;
@@ -510,13 +521,28 @@ void CircleList::print()
 {
     for (CircleContainer* p = ph; p != NULL; p = p->next)
     {
-        p->obj.print();
+        p->obj->print();
+        cout << endl;
     }
 }
 
-CircleContainer* CircleList::search(const char* str)
+int CircleList::search(const char* str)
 {
-    CircleContainer* p;
-    for (p = ph; ((p != NULL) && (strcmp(p->obj.color, str) != 0)); p = p->next);
-    return p;
+    CircleContainer* p = ph;
+    int i = 0;
+    for (; ((p != NULL) && (strcmp(p->obj->color, str) != 0)); p = p->next, i++);
+    if (p == NULL) return -1;
+    return i;
+}
+
+CircleContainer& CircleList::operator[](int ind)
+{
+    if ((ind > CircleContainer::getCounter() - 1) || (ind < 0))
+    {
+        cout << "invalid index";
+        exit(-1);
+    }
+    CircleContainer* p = ph;
+    for (int i = 0; i != ind; i++, p = p->next);
+    return *p;
 }

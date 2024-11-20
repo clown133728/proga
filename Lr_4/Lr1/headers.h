@@ -111,12 +111,13 @@ private:
 class CircleContainer
 {
 public:
-    CircleContainer(Circle _obj);
-
+    CircleContainer(Circle* _obj);
+    ~CircleContainer();
+    void print();
     static int getCounter();
 
 private:
-    Circle obj;
+    Circle* obj;
     CircleContainer* next;
     friend class CircleList;
     static int counter;
@@ -126,13 +127,15 @@ class CircleList
 {
 public:
     CircleList();
-    CircleList(Circle obj);
+    CircleList(Circle* obj);
     ~CircleList();
 
-    void add(Circle obj, int n);
+    void add(Circle* obj, int n);
     void del(int n);
     void print();
-    CircleContainer* search(const char* str);
+    int search(const char* str);
+
+    CircleContainer& operator[](int ind);
 
 private:
     CircleContainer* ph;
