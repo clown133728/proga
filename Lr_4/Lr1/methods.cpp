@@ -510,9 +510,10 @@ void CircleList::add(Circle* obj, int n)
     p->next = q;
 }
 
-void CircleList::del(int n)
+void CircleList::del(int n) //здесь тоже исключение
 {
     if (ph == NULL) return;
+    if (n == -1) n = CircleContainer::getCounter() - 1;
     if (n == 0)
     {
         CircleContainer* q = ph;
@@ -520,7 +521,6 @@ void CircleList::del(int n)
         delete q;
         return;
     }
-    if (n == -1) n = CircleContainer::getCounter() - 1;
     CircleContainer* p = ph;
     for (int i = 0; i < n - 1; p = p->next, i++);
     CircleContainer* q = p->next;

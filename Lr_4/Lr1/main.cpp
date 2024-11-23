@@ -85,6 +85,12 @@ void test2()
     delete c;
 }
 
+//int main() для четвертой
+//{
+//    //test1();
+//    //test2();
+//}
+
 int main() {
     try
     {
@@ -92,8 +98,6 @@ int main() {
 
          //   char* str = new char[15];
          //   strcpy(str, "blue");
-            //test1();
-            //test2();
         CircleList* cl = new CircleList;
         cl->add(new Circle(1, 3, 2.5, "black"), -1);
         cl->add(new Circle(2, 4, 1.3, "yellow"), -1);
