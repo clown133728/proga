@@ -6,6 +6,8 @@
 #include "headers.h" 
 using namespace std;
 Circle::Circle(int _x, int _y, double _radius, const char* _color) {
+    if (_radius < 0) throw underflow_error("radius must be non-negative");
+    if (_color == NULL) throw invalid_argument("_color is NULL");
     counter++;
     x = _x;
     y = _y;
@@ -67,6 +69,7 @@ double Circle::getRadius() const {
 }
 
 void Circle::getColor(char* _color) const {
+    if (_color == NULL) throw invalid_argument("_color is NULL");
     strcpy(_color, color);
 }
 
@@ -80,10 +83,12 @@ void Circle::setCoord(int _x, int _y) {
 }
 
 void Circle::setRadius(double _radius) {
+    if (_radius < 0) throw underflow_error("radius must be non-negative");
     radius = _radius;
 }
 
 void Circle::setColor(const char* _color) {
+    if (_color == NULL) throw invalid_argument("_color is NULL");
     delete[] color;
     allocateAndCopyColor(_color);
 }
@@ -186,10 +191,10 @@ void Circle::readFromBinary(ifstream& is) {
 
 void CirclesToText(const char* filename, const vector<Circle>& circles) {
     ofstream os(filename);
-    if (!os) { // проверка успешности открытия
-        cerr << "Error opening file for writing." << endl;
-        return;
-    }
+    if (!os) throw runtime_error("Error opening file for writing"); //{ // проверка успешности открытия
+    //    cerr << "Error opening file for writing." << endl;
+    //    return;
+    //}
     for (const auto& circle : circles) { // перебор всех кругов
         circle.writeToText(os); // запись круга в файл
     }
@@ -197,10 +202,10 @@ void CirclesToText(const char* filename, const vector<Circle>& circles) {
 
 void CirclesFromText(const char* filename, vector<Circle>& circles) {
     ifstream is(filename);
-    if (!is) { // проверка успешности открытия
-        cerr << "Error opening file for reading." << endl;
-        return;
-    }
+    if (!is) throw runtime_error("Error opening file for reading"); //{ // проверка успешности открытия
+    //    cerr << "Error opening file for reading." << endl;
+    //    return;
+    //}
     circles.clear();
     while (!is.eof()) {
         Circle circle; // создание временного объекта круга
@@ -211,10 +216,10 @@ void CirclesFromText(const char* filename, vector<Circle>& circles) {
 
 void CirclesToBin(const char* filename, const vector<Circle>& circles) {
     ofstream os(filename, ios::binary); // открытие файла в бинарном режиме для записи
-    if (!os) { // проверка успешности открытия
-        cerr << "Error opening file for writing." << endl;
-        return;
-    }
+    if (!os) throw runtime_error("Error opening file for writing"); // проверка успешности открытия
+    //    cerr << "Error opening file for writing." << endl;
+    //    return;
+    //}
     size_t count = circles.size(); // получение количества кругов в векторе
     os.write(reinterpret_cast<const char*>(&count), sizeof(count)); // запись количества кругов
     for (const auto& circle : circles) { // перебор всех кругов
@@ -224,10 +229,10 @@ void CirclesToBin(const char* filename, const vector<Circle>& circles) {
 
 void CirclesFromBin(const char* filename, vector<Circle>& circles) {
     ifstream is(filename, ios::binary); // открытие файла в бинарном режиме для чтения
-    if (!is) {
-        cerr << "Error opening file for reading." << endl;
-        return;
-    }
+    if (!is) throw runtime_error("Error opening file for reading"); //{
+    //    cerr << "Error opening file for reading." << endl;
+    //    return;
+    //}
     size_t count; //количество кргов
     is.read(reinterpret_cast<char*>(&count), sizeof(count)); // чтение количества кругов
     circles.clear();
@@ -243,6 +248,8 @@ int Circle::counter = 0; // инициализация статической п
 
 Oval::Oval(int _x, int _y, double _radius, double _radius1, const char* _color): Circle(_x, _y, _radius, _color)
 {
+    if (_radius1 < 0) throw underflow_error("radius must be non-negative");
+    if (_radius1 < 0) throw underflow_error("radius1 must be non-negative");
     radius1 = _radius1;
     cout << "oval constructor" << endl;
 }
@@ -265,6 +272,7 @@ Oval::~Oval()
 }
 
 void Oval::setRadius1(double _radius1) {
+    if (_radius1 < 0) throw underflow_error("radius must be non-negative");
     radius1 = _radius1;
 }
 
@@ -336,6 +344,7 @@ Oval operator-(const Oval& o1, const Oval& o2)
 
 OutlineCircle::OutlineCircle(int _x, int _y, double _radius, const char* _color, const char* _outlinecolor): Circle(_x, _y, _radius, _color)
 {
+    if (_radius < 0) throw underflow_error("radius must be non-negative"); 
     allocateAndCopyOutlineColor(_outlinecolor);
     cout << "outlinecircle constructor" << endl;
 }
@@ -364,10 +373,12 @@ OutlineCircle::~OutlineCircle()
 }
 
 void OutlineCircle::getOutlineColor(char* _outlinecolor) const {
+    if (_outlinecolor == NULL) throw invalid_argument("_outlunecolor is NULL");
     strcpy(_outlinecolor, outlinecolor);
 }
 
 void OutlineCircle::setOutlineColor(const char* _outlinecolor) {
+    if (_outlinecolor == NULL) throw invalid_argument("_outlunecolor is NULL");
     delete[] outlinecolor;
     allocateAndCopyOutlineColor(_outlinecolor);
 }
